@@ -3,7 +3,7 @@ services:
     image: meshtastic/meshtasticd:alpha-debian
     container_name: meshtasticd
     devices:
-      - "/dev/bus/usb/001/007:/dev/bus/usb/001/007" # replace using the output of lsusb
+      - "/dev/bus/usb/001:/dev/bus/usb/001" # replace using the output of lsusb
     ports:
       - 4403:4403
     group_add:
