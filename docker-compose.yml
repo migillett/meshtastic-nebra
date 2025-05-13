@@ -1,0 +1,14 @@
+services:
+  meshtasticd:
+    image: meshtastic/meshtasticd:alpha-debian
+    container_name: meshtasticd
+    devices:
+      - "/dev/bus/usb/001/007:/dev/bus/usb/001/007"
+    ports:
+      - 4403:4403
+    group_add:
+      - "plugdev"
+    volumes:
+      - ./data:/var/lib/meshtasticd
+      - ./config.yml:/etc/meshtasticd/config.yaml:ro
+    restart: unless-stopped
