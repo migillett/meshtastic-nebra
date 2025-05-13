@@ -12,3 +12,6 @@ Bus 001 Device 001: ID 1d6b:0002 Linux Foundation 2.0 root hub
 2. Look for the device that says `QinHeng Electronics CH341 in EPP/MEM/I2C mode, EPP/I2C adapter`. You'll want to write down the Bus number and Device number.
 3. Run `ls /dev/bus/usb/{busDeviceFromStep1}` to make sure that the device exists.
 4. Go to the `docker-compose.yml` file and modify the devices line to say: `- "/dev/bus/usb/{Bus}/{Device}:/dev/bus/usb/{Bus}/{Device}"`
+
+## Node Configuration Example
+I included the current configuration of my node as well in the `node_prefs.yml` file (excluding my private keys and position data) as an example of what I have working.
