@@ -1,5 +1,5 @@
 # Meshtastic Nebra Experiments
-Documentation for experimenting with the Nebra Helium Miners and Meshtastic
+Documentation for experimenting with the [Nebra Helium Miners](https://www.ebay.com/itm/205168616664) and [Meshtastic](https://meshtastic.org).
 
 ## Finding Your USB Path
 You'll need to modify the [Docker Compose](docker-compose.yml) file `devices:` field to whatever the USB path is on your device. Here's how to find that:
