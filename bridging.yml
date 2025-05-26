@@ -1,0 +1,29 @@
+services:
+  meshtasticd_shortslow:
+    image: meshtastic/meshtasticd:beta-debian
+    container_name: meshtasticd_shortslow
+    devices:
+      - "/dev/spidev0.0"
+      - "/dev/gpiochip0"
+    cap_add:
+      - SYS_RAWIO
+    ports:
+      - 4403:4403
+    volumes:
+      - ./shortslow_data/:/var/lib/meshtasticd
+      - ./shortslow.yml:/etc/meshtasticd/config.yaml:ro
+    restart: unless-stopped
+
+  meshtasticd_longfast:
+    image: meshtastic/meshtasticd:beta-debian
+    container_name: meshtasticd_longfast
+    devices:
+      - "/dev/bus/usb/001:/dev/bus/usb/001"
+    group_add:
+      - "plugdev"
+    ports:
+      - 4404:4403
+    volumes:
+      - ./longfast_data/:/var/lib/meshtasticd
+      - ./longfast.yml:/etc/meshtasticd/config.yaml:ro
+    restart: unless-stopped
