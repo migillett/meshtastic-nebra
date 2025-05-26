@@ -24,6 +24,9 @@ sudo wget -O /etc/meshtasticd/config.d/NebraHat_2W.yaml https://github.com/migil
 
 echo "Appending General configuration parameters to config file"
 sudo tee -a /etc/meshtasticd/config.d/NebraHat_2W.yaml << 'EOF'
+Logging:
+  LogLevel: info
+
 General:
   MACAddressSource: eth0
   MaxNodes: 200
