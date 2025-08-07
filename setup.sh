@@ -2,13 +2,14 @@
 
 # exit if ANY steps in this process fails
 set -e
+export DEBIAN_FRONTEND=noninteractive
 
 # echo "Adding Meshtastic repository to apt sources"
 # echo 'deb http://download.opensuse.org/repositories/network:/Meshtastic:/beta/Raspbian_12/ /' | sudo tee /etc/apt/sources.list.d/network:Meshtastic:beta.list
 # curl -fsSL https://download.opensuse.org/repositories/network:Meshtastic:beta/Raspbian_12/Release.key | gpg --dearmor | sudo tee /etc/apt/trusted.gpg.d/network_Meshtastic_beta.gpg > /dev/null
 
 echo "Running apt update and upgrade"
-sudo apt update && sudo apt upgrade -y
+sudo apt update && sudo apt upgrade -y -o Dpkg::Options::="--force-confnew"
 
 echo "Cleaning up unneeded installs"
 apt remove -y iptables exim4-base exim4-config exim4-daemon-light
