@@ -14,9 +14,9 @@ echo "Installing dependencies and meshtasticd firmware"
 sudo apt install meshtasticd wget git zsh pipx -y
 
 echo "Installing Meshtastic CLI and Contact TUI"
-pipx install meshtasticd && pipx install contact && pipx ensurepath
+pipx install meshtastic && pipx install contact && pipx ensurepath
 
-echo "Installing zsh"
+echo "Installing oh my zsh"
 sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
 
 echo "Pulling config.yml file for Nebra hat"
@@ -34,9 +34,9 @@ General:
   ConfigDirectory: /etc/meshtasticd/config.d/
 EOF
 
-echo "Installing Docker"
-curl -sSL https://get.docker.com | sh
-sudo usermod -aG docker $USER
+# echo "Installing Docker"
+# curl -sSL https://get.docker.com | sh
+# sudo usermod -aG docker $USER
 
 echo "Cleaning up unused dependencies"
 sudo apt autoremove -y
