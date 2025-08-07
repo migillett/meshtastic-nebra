@@ -12,8 +12,8 @@ echo "Running apt update and upgrade"
 sudo apt update && sudo apt upgrade -y -o Dpkg::Options::="--force-confnew"
 
 echo "Cleaning up unneeded installs"
-apt remove -y iptables exim4-base exim4-config exim4-daemon-light
-apt purge -y exim4-base exim4-config exim4-daemon-light
+sudo apt remove -y iptables exim4-base exim4-config exim4-daemon-light
+sudo apt purge -y exim4-base exim4-config exim4-daemon-light
 
 echo "Installing dependencies"
 sudo apt install wget lunzip jq git zsh pipx -y
@@ -39,9 +39,21 @@ sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/too
 #   ConfigDirectory: /etc/meshtasticd/config.d/
 # EOF
 
-echo "Installing Docker"
-curl -sSL https://get.docker.com | sh
-sudo usermod -aG docker $USER
+if ! command -v docker &> /dev/null; then
+    echo "Docker not found. Installing Docker..."
+    # Install Docker using the official installation script
+    curl -sSL https://get.docker.com | sh
+else
+    echo "Docker is already installed: $(docker --version)"
+fi
+
+# check if current user is in the docker group
+if ! groups $USER | grep -q "\bdocker\b"; then
+    echo "Adding current user to the docker group"
+    sudo usermod -aG docker $USER
+else
+    echo "Current user is already in the docker group"
+fi
 
 echo "Cleaning up unused dependencies"
 sudo apt autoremove -y
