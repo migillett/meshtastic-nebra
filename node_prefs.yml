@@ -7,7 +7,7 @@ config:
   lora:
     channelNum: 20
     configOkToMqtt: true
-    hopLimit: 5
+    hopLimit: 3
     ignoreMqtt: true
     region: US
     sx126xRxBoostedGain: true
@@ -39,6 +39,7 @@ module_config:
     detectionTriggerType: LOGIC_HIGH
     minimumBroadcastSecs: 45
   mqtt:
+    enabled: false
     address: mqtt.meshtastic.org
     encryptionEnabled: true
     password: large4cats

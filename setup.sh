@@ -40,9 +40,12 @@ pipx install meshtastic && pipx install contact && pipx ensurepath
 
 ### DOCKER INSTALLATION
 if ! command -v docker &> /dev/null; then
-  echo "Docker not found. Installing Docker..."
+  echo "Installing Docker..."
   # Install Docker using the official installation script
-  curl -sSL https://get.docker.com | sh
+  curl -fsSL https://get.docker.com -o get-docker.sh
+  sudo sh get-docker.sh
+  rm get-docker.sh
+  echo "Docker installed successfully: $(docker --version)"
 else
   echo "Docker is already installed: $(docker --version)"
 fi
