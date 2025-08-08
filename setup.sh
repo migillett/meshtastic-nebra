@@ -9,20 +9,25 @@ export DEBIAN_FRONTEND=noninteractive
 # curl -fsSL https://download.opensuse.org/repositories/network:Meshtastic:beta/Raspbian_12/Release.key | gpg --dearmor | sudo tee /etc/apt/trusted.gpg.d/network_Meshtastic_beta.gpg > /dev/null
 
 echo "Running apt update and upgrade"
-sudo apt update && sudo apt upgrade -y -o Dpkg::Options::="--force-confnew"
+sudo apt update -qq && sudo apt upgrade -y -o Dpkg::Options::="--force-confnew" -qq
 
 echo "Cleaning up unneeded installs"
-sudo apt remove -y iptables exim4-base exim4-config exim4-daemon-light
-sudo apt purge -y exim4-base exim4-config exim4-daemon-light
+sudo apt remove -y iptables exim4-base exim4-config exim4-daemon-light -qq
+sudo apt purge -y exim4-base exim4-config exim4-daemon-light -qq
 
 echo "Installing dependencies"
-sudo apt install wget lunzip jq git zsh pipx -y
+sudo apt install wget lunzip jq git zsh pipx -y -qq
+
+if [ -d "/root/.oh-my-zsh" ]; then
+  echo "Oh My Zsh already installed"
+else
+  echo "Installing oh my zsh"
+  sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended --keep-zshrc || { echo "Oh My Zsh install failed"; exit 1; }
+  chsh -s $(which zsh) $USER
+fi
 
 echo "Installing Meshtastic CLI and Contact TUI"
 pipx install meshtastic && pipx install contact && pipx ensurepath
-
-echo "Installing oh my zsh"
-sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
 
 # echo "Pulling config.yml file for Nebra hat"
 # sudo wget -O /etc/meshtasticd/config.d/NebraHat_2W.yaml https://github.com/migillett/Meshtastic-Hardware/raw/refs/heads/main/NebraHat/NebraHat_2W.yaml
