@@ -18,7 +18,7 @@ sudo apt purge -y exim4-base exim4-config exim4-daemon-light -qq
 echo "Installing dependencies"
 sudo apt install wget lunzip jq git zsh pipx -y -qq
 
-if [ ! -f "~/.oh-my-zsh" ]; then
+if [ ! -f "/home/${USER}/.oh-my-zsh" ]; then
   echo "Installing oh my zsh"
   sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
   chsh -s $(which zsh) $USER
