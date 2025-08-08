@@ -18,12 +18,12 @@ sudo apt purge -y exim4-base exim4-config exim4-daemon-light -qq
 echo "Installing dependencies"
 sudo apt install wget lunzip jq git zsh pipx -y -qq
 
-if [ ! -f "/home/${USER}/.oh-my-zsh" ]; then
+if [ -d "/home/$USER/.oh-my-zsh" ]; then
+  echo "Oh My Zsh is already installed"
+else
   echo "Installing oh my zsh"
   sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
   chsh -s $(which zsh) $USER
-else
-  echo "Oh My Zsh is already installed"
 fi
 
 echo "Installing Meshtastic CLI and Contact TUI"
