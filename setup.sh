@@ -1,4 +1,5 @@
 #!/bin/bash
+# Run using: `bash setup.sh`
 
 # Borrowed from the harden_meshtasticd project
 # https://github.com/pinztrek/harden_meshtasticd/blob/main/harden.sh
@@ -29,7 +30,7 @@ if [ -d "/home/$USER/.oh-my-zsh" ]; then
   echo "Oh My Zsh is already installed"
 else
   echo "Installing oh my zsh"
-  sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+  sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
   sudo chsh -s $(which zsh) $USER
   REBOOT=true
 fi
