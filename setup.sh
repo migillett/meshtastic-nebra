@@ -18,7 +18,7 @@ sudo apt purge -y exim4-base exim4-config exim4-daemon-light -qq
 echo "Installing dependencies"
 sudo apt install wget lunzip jq git zsh pipx -y -qq
 
-if [ ! -d "/root/.oh-my-zsh" ]; then
+if [ ! -f "/root/.oh-my-zsh" ]; then
   echo "Installing oh my zsh"
   sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
   chsh -s $(which zsh) $USER
@@ -61,7 +61,8 @@ else
 fi
 
 echo "Cleaning up unused dependencies"
-sudo apt autoremove -y
+sudo apt autoremove -y -qq
+sudo apt clean -y -qq
 
 echo "Script complete. Rebooting..."
 sudo reboot now
