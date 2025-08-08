@@ -1,49 +1,44 @@
 #!/bin/bash
 
+# Borrowed from the harden_meshtasticd project
+# https://github.com/pinztrek/harden_meshtasticd/blob/main/harden.sh
+
+REBOOT=false
 # exit if ANY steps in this process fails
 set -e
-export DEBIAN_FRONTEND=noninteractive
 
-# echo "Adding Meshtastic repository to apt sources"
-# echo 'deb http://download.opensuse.org/repositories/network:/Meshtastic:/beta/Raspbian_12/ /' | sudo tee /etc/apt/sources.list.d/network:Meshtastic:beta.list
-# curl -fsSL https://download.opensuse.org/repositories/network:Meshtastic:beta/Raspbian_12/Release.key | gpg --dearmor | sudo tee /etc/apt/trusted.gpg.d/network_Meshtastic_beta.gpg > /dev/null
+### NON-INTERACTIVE CHECK
+if [ -z "${DEBIAN_FRONTEND}" ]; then
+    export DEBIAN_FRONTEND=noninteractive
+fi
 
+### SYSTEM UPDATE & DEPENDENCIES
 echo "Running apt update and upgrade"
 sudo apt update -qq && sudo apt upgrade -y -o Dpkg::Options::="--force-confnew" -qq
-
-echo "Cleaning up unneeded installs"
-sudo apt remove -y iptables exim4-base exim4-config exim4-daemon-light -qq
-sudo apt purge -y exim4-base exim4-config exim4-daemon-light -qq
 
 echo "Installing dependencies"
 sudo apt install wget lunzip jq git zsh pipx -y -qq
 
+echo "Cleaning up unused dependencies"
+sudo apt purge -y exim4-base exim4-config exim4-daemon-light -qq
+sudo apt autoremove -y -qq
+sudo apt clean -y -qq
+
+### OH MY ZSH INSTALLATION
 if [ -d "/home/$USER/.oh-my-zsh" ]; then
   echo "Oh My Zsh is already installed"
 else
   echo "Installing oh my zsh"
   sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
   chsh -s $(which zsh) $USER
+  REBOOT=true
 fi
 
+### MESHTASTIC UTILITIES INSTALLATION
 echo "Installing Meshtastic CLI and Contact TUI"
 pipx install meshtastic && pipx install contact && pipx ensurepath
 
-# echo "Pulling config.yml file for Nebra hat"
-# sudo wget -O /etc/meshtasticd/config.d/NebraHat_2W.yaml https://github.com/migillett/Meshtastic-Hardware/raw/refs/heads/main/NebraHat/NebraHat_2W.yaml
-
-# echo "Appending General configuration parameters to config file"
-# sudo tee -a /etc/meshtasticd/config.d/NebraHat_2W.yaml << 'EOF'
-# Logging:
-#   LogLevel: info
-
-# General:
-#   MACAddressSource: eth0
-#   MaxNodes: 200
-#   MaxMessageQueue: 100
-#   ConfigDirectory: /etc/meshtasticd/config.d/
-# EOF
-
+### DOCKER INSTALLATION
 if ! command -v docker &> /dev/null; then
   echo "Docker not found. Installing Docker..."
   # Install Docker using the official installation script
@@ -56,13 +51,23 @@ fi
 if ! groups $USER | grep -q "\bdocker\b"; then
   echo "Adding current user to the docker group"
   sudo usermod -aG docker $USER
+  REBOOT=true
 else
   echo "Current user is already in the docker group"
 fi
 
-echo "Cleaning up unused dependencies"
-sudo apt autoremove -y -qq
-sudo apt clean -y -qq
+### DISABLE UNNEEDED SERVICES
+for service in bluetooth ModemManager
+do
+  sudo systemctl stop "$service" # Quote $service for safety
+  sudo systemctl disable "$service" # Quote $service for safety
+  echo "Disabled $service service"
+done
 
-echo "Script complete. Rebooting..."
-sudo reboot now
+### FINISHING UP
+echo "Setup complete!"
+
+if [ "$REBOOT" = true ]; then
+  echo "Rebooting system..."
+  sudo reboot now
+fi
