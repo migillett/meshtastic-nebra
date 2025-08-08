@@ -18,12 +18,16 @@ echo "Running apt update and upgrade"
 sudo apt update -qq && sudo apt upgrade -y -o Dpkg::Options::="--force-confnew" -qq
 
 echo "Installing dependencies"
-sudo apt install wget lunzip jq git zsh pipx -y -qq
+sudo apt install wget lunzip jq git zsh pipx rpi-connect-lite -y -qq
 
 echo "Cleaning up unused dependencies"
 sudo apt purge -y exim4-base exim4-config exim4-daemon-light -qq
 sudo apt autoremove -y -qq
 sudo apt clean -y -qq
+
+### RASPBERRY PI CONNECT
+loginctl enable-linger
+rpi-connect on
 
 ### OH MY ZSH INSTALLATION
 if [ -d "/home/$USER/.oh-my-zsh" ]; then
@@ -70,6 +74,9 @@ done
 
 ### FINISHING UP
 echo "Setup complete!"
+
+### SIGNIN TO RPI CONNECT
+rpi-connect signin
 
 if [ "$REBOOT" = true ]; then
   echo "Rebooting system..."
