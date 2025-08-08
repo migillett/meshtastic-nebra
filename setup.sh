@@ -73,4 +73,6 @@ echo "Setup complete!"
 if [ "$REBOOT" = true ]; then
   echo "Rebooting system..."
   sudo reboot now
+else
+  echo "No reboot required."
 fi
