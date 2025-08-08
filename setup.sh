@@ -18,12 +18,12 @@ sudo apt purge -y exim4-base exim4-config exim4-daemon-light -qq
 echo "Installing dependencies"
 sudo apt install wget lunzip jq git zsh pipx -y -qq
 
-if [ -d "/root/.oh-my-zsh" ]; then
-  echo "Oh My Zsh already installed"
-else
+if [ ! -d "/root/.oh-my-zsh" ]; then
   echo "Installing oh my zsh"
-  sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended --keep-zshrc || { echo "Oh My Zsh install failed"; exit 1; }
+  sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
   chsh -s $(which zsh) $USER
+else
+  echo "Oh My Zsh is already installed"
 fi
 
 echo "Installing Meshtastic CLI and Contact TUI"
@@ -45,19 +45,19 @@ pipx install meshtastic && pipx install contact && pipx ensurepath
 # EOF
 
 if ! command -v docker &> /dev/null; then
-    echo "Docker not found. Installing Docker..."
-    # Install Docker using the official installation script
-    curl -sSL https://get.docker.com | sh
+  echo "Docker not found. Installing Docker..."
+  # Install Docker using the official installation script
+  curl -sSL https://get.docker.com | sh
 else
-    echo "Docker is already installed: $(docker --version)"
+  echo "Docker is already installed: $(docker --version)"
 fi
 
 # check if current user is in the docker group
 if ! groups $USER | grep -q "\bdocker\b"; then
-    echo "Adding current user to the docker group"
-    sudo usermod -aG docker $USER
+  echo "Adding current user to the docker group"
+  sudo usermod -aG docker $USER
 else
-    echo "Current user is already in the docker group"
+  echo "Current user is already in the docker group"
 fi
 
 echo "Cleaning up unused dependencies"
