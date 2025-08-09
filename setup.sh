@@ -26,7 +26,7 @@ system_dependencies(){
 }
 
 
-check_spi() {
+check_spi(){
   ### Enable SPI if not already enabled
   echo "Checking if SPI is enabled..."
   if command -v raspi-config &> /dev/null; then
@@ -45,7 +45,7 @@ check_spi() {
 }
 
 
-oh_my_zsh_install() {
+oh_my_zsh_install(){
   if [ -d "/home/$USER/.oh-my-zsh" ]; then
     echo "Oh My Zsh is already installed"
   else
@@ -57,7 +57,7 @@ oh_my_zsh_install() {
 }
 
 
-docker_setup() {
+docker_setup(){
   if ! command -v docker &> /dev/null; then
     echo "Installing Docker..."
     # Install Docker using the official installation script
@@ -80,7 +80,7 @@ docker_setup() {
 }
 
 
-rpi_connect_setup() {
+rpi_connect_setup(){
   ### TURN ON RASPBERRY PI CONNECT
   loginctl enable-linger
   rpi-connect on
@@ -89,7 +89,7 @@ rpi_connect_setup() {
 }
 
 
-stop_unneeded_services() {
+stop_unneeded_services(){
   for service in bluetooth ModemManager
   do
     sudo systemctl stop "$service" # Quote $service for safety
