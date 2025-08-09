@@ -104,22 +104,22 @@ if [ -z "${DEBIAN_FRONTEND}" ]; then
 fi
 
 ### SYSTEM UPDATE & DEPENDENCIES
-system_dependencies()
+system_dependencies
 
 ### SPI
-check_spi()
+check_spi
 
 ### OH MY ZSH INSTALLATION
-oh_my_zsh_install()
+oh_my_zsh_install
 
 ### DOCKER INSTALLATION
-docker_setup()
+docker_setup
 
 ### RPI CONNECT SETUP
-rpi_connect_setup()
+rpi_connect_setup
 
 ### DISABLE UNNEEDED SERVICES
-stop_unneeded_services()
+stop_unneeded_services
 
 ### FINISHING UP
 echo "Setup complete!"
