@@ -18,7 +18,7 @@ echo "Running apt update and upgrade"
 sudo apt update -qq && sudo apt upgrade -y -o Dpkg::Options::="--force-confnew" -qq
 
 echo "Installing dependencies"
-sudo apt install wget lunzip jq git zsh pipx rpi-connect-lite -y -qq
+sudo apt install wget lunzip jq git zsh pipx rpi-connect-lite i2c-tools -y -qq
 
 echo "Cleaning up unused dependencies"
 sudo apt purge -y exim4-base exim4-config exim4-daemon-light -qq
@@ -28,6 +28,16 @@ sudo apt clean -y -qq
 ### RASPBERRY PI CONNECT
 loginctl enable-linger
 rpi-connect on
+
+### SPI
+if command -v raspi-config &> /dev/null; then
+  echo "Enabling SPI using raspi-config nonint"
+  sudo raspi-config nonint do_spi 0
+  REBOOT=true
+else
+  echo "raspi-config command not found, exiting"
+  exit 1
+fi
 
 ### OH MY ZSH INSTALLATION
 if [ -d "/home/$USER/.oh-my-zsh" ]; then
