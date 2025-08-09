@@ -3,12 +3,22 @@ services:
     image: meshtastic/meshtasticd:alpha-debian
     container_name: meshtasticd
     devices:
-      - "/dev/bus/usb/001:/dev/bus/usb/001" # replace using the output of lsusb
+      # SPI DEVICES
+      - "/dev/spidev0.0"
+      - "/dev/gpiochip0"
+      # I2C DEVICES
+      - "/dev/i2c-1:/dev/i2c-1"
+      # USB DEVICES
+      - "/dev/bus/usb/001:/dev/bus/usb/001" # replace 001 using the output of lsusb
     ports:
       - 4403:4403
+    # Required for SPI
+    cap_add:
+      - SYS_RAWIO
+    # Required for USB
     group_add:
       - "plugdev"
     volumes:
-      - ./data:/var/lib/meshtasticd
+      - /var/lib/meshtasticd:/var/lib/meshtasticd
       - ./config.yml:/etc/meshtasticd/config.yaml:ro
     restart: unless-stopped
