@@ -1,5 +1,5 @@
 #!/bin/bash
-# Run using: `bash setup.sh`
+# Run using: `bash ./setup.sh`
 
 # Borrowed from the harden_meshtasticd project
 # https://github.com/pinztrek/harden_meshtasticd/blob/main/harden.sh
@@ -103,22 +103,11 @@ if [ -z "${DEBIAN_FRONTEND}" ]; then
     export DEBIAN_FRONTEND=noninteractive
 fi
 
-### SYSTEM UPDATE & DEPENDENCIES
 system_dependencies
-
-### SPI
 check_spi
-
-### OH MY ZSH INSTALLATION
 oh_my_zsh_install
-
-### DOCKER INSTALLATION
 docker_setup
-
-### RPI CONNECT SETUP
 rpi_connect_setup
-
-### DISABLE UNNEEDED SERVICES
 stop_unneeded_services
 
 ### FINISHING UP
