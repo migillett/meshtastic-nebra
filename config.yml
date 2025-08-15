@@ -1,18 +1,21 @@
+# https://github.com/wehooper4/Meshtastic-Hardware/tree/main/NebraHat
+# Use for 2 watt hat
 Lora:
-  Module: sx1262
-  CS: 0
-  IRQ: 6
-  Reset: 2
-  Busy: 4
-  RXen: 1
+  Module: sx1262  # Nebra SX1262 Pi Hat - 2W
   DIO2_AS_RF_SWITCH: true
   DIO3_TCXO_VOLTAGE: true
-  spidev: ch341
-  USB_PID: 0x5512
-  USB_VID: 0x1A86
+  SX126X_MAX_POWER: 8
+#  CS: 8 # Newer version of Meshtasticd dont need this?
+  IRQ: 22
+  Busy: 4
+  Reset: 18
+  RXen: 25
 
 Logging:
   LogLevel: info # debug, info, warn, error
+
+I2C:
+  I2CDevice: /dev/i2c-1
 
 General:
   MaxNodes: 200
