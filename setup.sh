@@ -14,7 +14,7 @@ system_dependencies() {
   sudo apt update -qq && sudo apt upgrade -y -o Dpkg::Options::="--force-confnew" -qq
 
   echo "Installing dependencies"
-  sudo apt install wget lunzip jq git zsh pipx rpi-connect-lite i2c-tools -y -qq
+  sudo apt install wget lunzip jq git i2c-tools zsh pipx rpi-connect-lite i2c-tools -y -qq
 
   echo "Cleaning up unused dependencies"
   sudo apt purge -y exim4-base exim4-config exim4-daemon-light -qq
